@@ -1,0 +1,27 @@
+name: Daily Push Notification
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # runs at 6:00 UTC (adjust if needed)
+  workflow_dispatch:
+
+jobs:
+  send-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install node-fetch@2 moment-timezone
+
+      - name: Run push script
+        run: node push.js
+        env:
+          ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
+          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
