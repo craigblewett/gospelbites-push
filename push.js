@@ -14,15 +14,15 @@ async function sendNotification() {
     const excerpt = excerptRaw.split(" ").slice(0, 25).join(" ") + "...";
     const image = post.better_featured_image?.source_url || 'https://gospelbites.org/default.jpg';
 
-    const payload = {
-      app_id: APP_ID,
-      included_segments: ["All"],
-      headings: { en: title },
-      contents: { en: excerpt },
-      chrome_web_image: image,
-      delayed_option: "timezone",
-      delivery_time_of_day: "8:00AM"
-    };
+const payload = {
+  app_id: APP_ID,
+  included_segments: ["All"],
+  headings: { en: title },
+  contents: { en: excerpt },
+  chrome_web_image: image,
+  send_after: moment().add(1, 'minute').toISOString()  // 🔥 Immediate push
+};
+
 
     const resp = await fetch('https://onesignal.com/api/v1/notifications', {
       method: 'POST',
